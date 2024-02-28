@@ -41,7 +41,7 @@ app.get('/generate', async (req, res) => {
 
     // Score
     ctx.font = "48px sans-serif"; // Using sans-serif as a fallback
-    ctx.fillText(score, canvas.width / 2, canvas.height / 2 - 50);
+    ctx.fillText(score, canvas.width / 2, (canvas.height / 2)+20);
 
     // Additional text
     ctx.font = "36px sans-serif"; // Using sans-serif as a fallback
@@ -50,8 +50,8 @@ app.get('/generate', async (req, res) => {
     // Footer text and logo
     const logoSrc = 'jfmplay.png';
     const logoHeight = 50; // Height of the logo
-    await drawImage(logoSrc, canvas.width - 170, canvas.height - 70, 135); // Logo width is auto-calculated in drawImage
-    ctx.fillText("...men det er også godt på", canvas.width / 2, canvas.height - 35);
+    await drawImage(logoSrc, canvas.width - 190, canvas.height - 75, 145); // Logo width is auto-calculated in drawImage
+    ctx.fillText("...men det er også godt på", (canvas.width / 2)-50, canvas.height - 35);
 
     // Convert canvas to image
     const buffer = canvas.toBuffer('image/png');
