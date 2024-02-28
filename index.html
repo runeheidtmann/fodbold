@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+      const params = new URLSearchParams(window.location.search);
+      const team1 = params.get('team1');
+      const team2 = params.get('team2');
+      const score = params.get('score');
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = 800;
+      canvas.height = 600;
+
+      ctx.fillStyle = "#173F3F";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#050821";
+      ctx.fillRect(0, 0, canvas.width, 100);
+      ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
+
+      function loadImage(src, callback) {
+        const img = new Image();
+        img.onload = () => callback(img);
+        img.src = src;
+      }
+
+      function drawImage(img, x, y, width) {
+        const height = img.height * (width / img.width);
+        ctx.drawImage(img, x, y, width, height);
+      }
+
+      document.fonts.load('10pt "Roboto Condensed"').then(() => {
+        loadImage("logos/" + team1 + ".png", (img) => {
+          const team1X = 100;
+          const team1Y = 200;
+          drawImage(img, team1X, team1Y, 200);
+
+          ctx.fillStyle = "white";
+          ctx.font = "20px 'Roboto Condensed'";
+          ctx.textAlign = "center";
+          ctx.fillText(team1, team1X + 100, team1Y + 230); // Position the text under the team1 logo
+
+          loadImage("logos/" + team2 + ".png", (img2) => {
+            const team2X = canvas.width - 200 - 100;
+            const team2Y = 200;
+            drawImage(img2, team2X, team2Y, 200);
+
+            ctx.fillText(team2, team2X + 100, team2Y + 230); // Position the text under the team2 logo
+
+            ctx.font = "48px 'Roboto Condensed'";
+            ctx.fillStyle = "white";
+            ctx.fillText(score, canvas.width / 2, canvas.height / 2);
+
+            ctx.font = "36px 'Roboto Condensed'";
+            ctx.fillText("Det er bedst at se fodbold på stadion", canvas.width / 2, 60);
+            
+            // Load and draw the jfm play logo in the footer
+               loadImage("jfmplay.png", (jfmLogo) => {
+              const logoHeight = 50; // Set the logo height
+              const logoWidth = jfmLogo.width * (logoHeight / jfmLogo.height); // Calculate the logo width keeping the aspect ratio
+              drawImage(jfmLogo, canvas.width - logoWidth - 20, canvas.height - logoHeight - 25, logoWidth, logoHeight);
+              
+              ctx.fillText("...men det er også godt på", canvas.width / 2 - logoWidth / 2, canvas.height - 35);
+            });
+            document.body.appendChild(canvas);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
