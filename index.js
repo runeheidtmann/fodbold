@@ -4,13 +4,25 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-
 // Register the Roboto Condensed font
 registerFont('RobotoCondensed-Regular.ttf', { family: 'Roboto Condensed' });
 
 app.get('/generate', async (req, res) => {
     const { team1, team2, score } = req.query;
-
+    const teamNames = {
+        frem: "Frem",
+        lyseng: "Lyseng",
+        vanlose: "Vanløse",
+        sfboure: "Sfb-Oure",
+        vejgaardb: "Vejgaard B",
+        avarta: "Avarta",
+        naesby: "Næsby",
+        youngboys: "Young Boys",
+        holbaek: "Holbæk B&I",
+        ishoj: "Ishøj",
+        holstebro: "Holstebro",
+        vskaarhus: "VSK Århus",
+        }
     const canvas = createCanvas(800, 600);
     const ctx = canvas.getContext('2d');
 
@@ -42,10 +54,10 @@ app.get('/generate', async (req, res) => {
             ctx.fillStyle = "white";
             ctx.font = "20px 'Roboto Condensed'";
             ctx.textAlign = "center";
-            ctx.fillText(team1, 200, 200 + team1Height + 30);
+            ctx.fillText(teamNames[team1], 200, 200 + team1Height + 30);
         }),
         drawImage(`logos/${team2}.png`, canvas.width - 300, 200, 200).then(team2Height => {
-            ctx.fillText(team2, canvas.width - 200, 200 + team2Height + 30);
+            ctx.fillText(teamNames[team2], canvas.width - 200, 200 + team2Height + 30);
         })
     ]);
 
