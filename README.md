@@ -12,7 +12,7 @@ This Node.js application generates custom images for soccer matches, including p
 ### Prerequisites
 
 - Node.js
-- npm or yarn
+- npm
 
 ### Installation
 
@@ -65,3 +65,31 @@ This request generates an image with the logos of Arsenal and Chelsea, displayin
 **Example Request:**
 GET /generate/info?team1=naesby&team2=avarta&stadion=Næsby%20Stadion&date=3. marts&time=15:00&division=3
 
+## Team Names Key
+
+This application uses a key-value mapping to associate team identifiers with their full names or preferred display names. Here's a breakdown of the team identifiers that you should use in get-request and their corresponding names:
+
+- `holstebro`: Holstebro
+- `ishoj`: Ishøj
+- `Holbaek`: Holbæk B&I
+- `avarta`: Avarta
+- `VSKAarhus`: VSK Århus
+- `sfboure`: SfB-Oure
+- `lyseng`: Lyseng
+- `hik`: HIK
+- `vejgaardb`: Vejgaard B
+- `frem`: Frem
+- `brabrand`: Brabrand
+- `nykobing`: Nykøbing
+- `thisted`: Thisted
+- `ab`: AB
+- `youngboys`: Young Boys
+- `naesby`: Næsby
+- `middelfart`: Middelfart
+- `vanlose`: Vanløse
+- `fa2000`: FA 2000
+- `fremadamager`: Fremad Amager
+- `Roskilde`: Roskilde
+- `Esbjerg`: Esbjerg
+- `aarhusfremad`: Aarhus Fremad
+- `skive`: Skive
