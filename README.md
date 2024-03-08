@@ -71,9 +71,9 @@ This application uses a key-value mapping to associate team identifiers with the
 
 - `holstebro`: Holstebro
 - `ishoj`: Ishøj
-- `Holbaek`: Holbæk B&I
+- `holbaek`: Holbæk B&I
 - `avarta`: Avarta
-- `VSKAarhus`: VSK Århus
+- `vskaarhus`: VSK Århus
 - `sfboure`: SfB-Oure
 - `lyseng`: Lyseng
 - `hik`: HIK
@@ -89,8 +89,8 @@ This application uses a key-value mapping to associate team identifiers with the
 - `vanlose`: Vanløse
 - `fa2000`: FA 2000
 - `fremadamager`: Fremad Amager
-- `Roskilde`: Roskilde
-- `Esbjerg`: Esbjerg
+- `roskilde`: Roskilde
+- `efb`: Esbjerg
 - `aarhusfremad`: Aarhus Fremad
 - `skive`: Skive
 
