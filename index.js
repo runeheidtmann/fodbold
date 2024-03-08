@@ -6,7 +6,7 @@ const teamNames = require('./teamNames');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// Register the Roboto Condensed font
+// Register Roboto Condensed font which is the font JFM uses on websites.
 registerFont('RobotoCondensed-Regular.ttf', { family: 'Roboto Condensed' });
 
 // Endpoint for generating postmatch results with a score
@@ -28,7 +28,7 @@ app.get('/generate/results', async (req, res) => {
 
     // Draw Header and Footer
     drawHeaderText(ctx);
-    await drawFooterText(ctx, canvas);
+    await drawFooterText(ctx, canvas); //await because it needs to load jfm-logo.
     sendImage(ctx, canvas, res);
 });
 
@@ -53,7 +53,7 @@ app.get('/generate/info', async (req, res) => {
 
     // Header and Footer Text for Game Info
     drawHeaderText(ctx, "Fodbold skal ses på stadion");
-    await drawFooterText(ctx, canvas);
+    await drawFooterText(ctx, canvas); //await because it needs to load jfm-logo.
     sendImage(ctx, canvas, res);
 });
 

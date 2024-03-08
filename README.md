@@ -93,3 +93,68 @@ This application uses a key-value mapping to associate team identifiers with the
 - `Esbjerg`: Esbjerg
 - `aarhusfremad`: Aarhus Fremad
 - `skive`: Skive
+
+# Example Usage of the Info API Endpoint with PHP
+
+This guide demonstrates how to consume the `info` endpoint of our API using PHP. This endpoint generates pre-match information including date, time, and venue for given teams and division. The PHP script provided below is designed to download the resulting image file to your server.
+
+## Requirements
+
+- PHP with `curl` enabled
+- Access to the running API server (the example assumes it's running locally on port 8000)
+- Write permission in the directory where you want to save the image
+
+## PHP Script
+
+Below is the PHP script to make a GET request to the `info` endpoint. It constructs a URL with query parameters for the `team1`, `team2`, `stadion`, `date`, `time`, and `division` fields, and then saves the received image response to the server.
+
+```php
+<?php
+
+// Replace these values with actual data
+$team1 = 'Team1Name';
+$team2 = 'Team2Name';
+$stadion = 'StadiumName';
+$date = 'YYYY-MM-DD';
+$time = 'HH:MM';
+$division = 'DivisionName';
+
+// Path to save the downloaded image
+$savePath = 'path/to/save/the/image.png';
+
+// API endpoint and parameters
+$baseUrl = 'http://localhost:8000/generate/info';
+$queryParams = http_build_query([
+    'team1' => $team1,
+    'team2' => $team2,
+    'stadion' => $stadion,
+    'date' => $date,
+    'time' => $time,
+    'division' => $division,
+]);
+
+// Full URL with query parameters
+$url = "{$baseUrl}?{$queryParams}";
+
+// Initialize a cURL session
+$ch = curl_init($url);
+
+// Set options for the cURL request
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the transfer as a string of the return value of curl_exec() instead of outputting it directly
+
+// Execute the cURL session
+$response = curl_exec($ch);
+
+// Close the cURL session
+curl_close($ch);
+
+// Check if the response is false
+if ($response === false) {
+    echo "Failed to get response from the API";
+} else {
+    // Save the response to a file
+    file_put_contents($savePath, $response);
+    echo "Image saved to '$savePath'";
+}
+
+?>
