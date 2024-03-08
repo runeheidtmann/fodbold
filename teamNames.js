@@ -3,9 +3,9 @@ function teamNames(teamName) {
     const teamNamesDictionary = {
         "holstebro": "Holstebro",
         "ishoj": "Ishøj",
-        "Holbaek": "Holbæk B&I",
+        "holbaek": "Holbæk B&I",
         "avarta": "Avarta",
-        "VSKAarhus": "VSK Århus",
+        "vskaarhus": "VSK Århus",
         "sfboure": "SfB-Oure",
         "lyseng": "Lyseng",
         "hik": "HIK",
@@ -21,8 +21,8 @@ function teamNames(teamName) {
         "vanlose": "Vanløse",
         "fa2000": "FA 2000",
         "fremadamager": "Fremad Amager",
-        "Roskilde": "Roskilde",
-        "Esbjerg": "Esbjerg",
+        "roskilde": "Roskilde",
+        "efb": "Esbjerg",
         "aarhusfremad": "Aarhus Fremad",
         "skive": "Skive",
         // Add the rest of the team names and their versions here
