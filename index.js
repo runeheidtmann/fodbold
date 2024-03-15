@@ -6,44 +6,46 @@ const teamNames = require('./teamNames');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// Set the image dimensions in one place
+const imageWidth = 912;
+const imageHeight = 512;
+
 // Register Roboto Condensed font which is the font JFM uses on websites.
 registerFont('RobotoCondensed-Regular.ttf', { family: 'Roboto Condensed' });
 
-// Endpoint for generating postmatch results with a score
+
 app.get('/generate/results', async (req, res) => {
     const { team1, team2, score, division } = req.query;
 
-    const canvas = createCanvas(800, 600);
+    const canvas = createCanvas(imageWidth, imageHeight);
     const ctx = canvas.getContext('2d');
-    setupCanvas(ctx);
+    setupCanvas(ctx, canvas);
 
     let team1Path = `logos/${division}/${team1}.png`;
     let team2Path = `logos/${division}/${team2}.png`;
 
-    await drawTeams(ctx, team1Path, team2Path, team1, team2, 100);
+    await drawTeams(ctx, team1Path, team2Path, team1, team2, 100, canvas);
 
     //Draw score
     ctx.font = "40px 'Roboto Condensed'";
     ctx.fillText(score, canvas.width / 2, canvas.height / 2);
 
-    // Draw Header and Footer
-    drawHeaderText(ctx);
-    await drawFooterText(ctx, canvas); //await because it needs to load jfm-logo.
+    drawHeaderText(ctx, canvas);
+    await drawFooterText(ctx, canvas);
     sendImage(ctx, canvas, res);
 });
 
-// Endpoint for generating prematch information including date, time, and venue
 app.get('/generate/info', async (req, res) => {
     const { team1, team2, stadion, date, time, division } = req.query;
 
-    const canvas = createCanvas(800, 600);
+    const canvas = createCanvas(imageWidth, imageHeight);
     const ctx = canvas.getContext('2d');
-    setupCanvas(ctx);
+    setupCanvas(ctx, canvas);
 
     let team1Path = `logos/${division}/${team1}.png`;
     let team2Path = `logos/${division}/${team2}.png`;
 
-    await drawTeams(ctx, team1Path, team2Path, team1, team2, 50);
+    await drawTeams(ctx, team1Path, team2Path, team1, team2, 50, canvas);
 
     ctx.font = "24px 'Roboto Condensed'";
     const middleY = canvas.height / 2 - 25;
@@ -51,38 +53,39 @@ app.get('/generate/info', async (req, res) => {
     ctx.fillText(date, canvas.width / 2, middleY + 40);
     ctx.fillText(time, canvas.width / 2, middleY + 80);
 
-    // Header and Footer Text for Game Info
-    drawHeaderText(ctx, "Fodbold skal ses på stadion");
-    await drawFooterText(ctx, canvas); //await because it needs to load jfm-logo.
+    drawHeaderText(ctx, canvas, "Fodbold skal ses på stadion");
+    await drawFooterText(ctx, canvas);
     sendImage(ctx, canvas, res);
 });
 
-function setupCanvas(ctx) {
+function setupCanvas(ctx, canvas) {
     // Background
     ctx.fillStyle = "#173F3F";
-    ctx.fillRect(0, 0, 800, 600);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Top and bottom bars
     ctx.fillStyle = "#050821";
-    ctx.fillRect(0, 0, 800, 100);
-    ctx.fillRect(0, 500, 800, 100);
+    ctx.fillRect(0, 0, canvas.width, 100);
+    ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
 }
 
-async function drawTeams(ctx, team1Path, team2Path, team1, team2, logoMargin) {
-    // Draw logos and text for team1 and team2
-    // team1 = the winner of the match. If draw team1 = home_team
+async function drawTeams(ctx, team1Path, team2Path, team1, team2, logoMargin, canvas) {
+    // Adjust logo positioning based on canvas size
+    const logoSize = 200; // Or adjust based on canvas size if needed
+    const centerY = canvas.height / 2 - logoSize / 2;
     await Promise.all([
-        drawImage(ctx, team1Path, logoMargin, 200, 200).then(team1Height => {
+        drawImage(ctx, team1Path, logoMargin, centerY, logoSize).then(team1Height => {
             ctx.fillStyle = "white";
             ctx.font = "20px 'Roboto Condensed'";
             ctx.textAlign = "center";
-            ctx.fillText(teamNames(team1), logoMargin + 100, 200 + team1Height + 30);
+            ctx.fillText(teamNames(team1), logoMargin + logoSize / 2, centerY + team1Height + 30);
         }),
-        drawImage(ctx, team2Path, 800 - logoMargin - 200, 200, 200).then(team2Height => {
-            ctx.fillText(teamNames(team2), 800 - (logoMargin + 100), 200 + team2Height + 30);
+        drawImage(ctx, team2Path, canvas.width - logoMargin - logoSize, centerY, logoSize).then(team2Height => {
+            ctx.fillText(teamNames(team2), canvas.width - (logoMargin + logoSize / 2), centerY + team2Height + 30);
         })
     ]);
 }
+
 
 async function drawImage(ctx, src, x, y, width) {
     try {
@@ -97,13 +100,13 @@ async function drawImage(ctx, src, x, y, width) {
     }
 }
 
-function drawHeaderText(ctx) {
-    const text = "Fodbold skal ses på stadion"
+function drawHeaderText(ctx, canvas, text = "Fodbold skal ses på stadion") {
     ctx.fillStyle = "white";
     ctx.font = "36px 'Roboto Condensed'";
     ctx.textAlign = "center";
-    ctx.fillText(text, 400, 60); // Center the header text
+    ctx.fillText(text, canvas.width / 2, 60); // Center the header text based on canvas width
 }
+
 
 async function drawFooterText(ctx, canvas) {
     const footerText = "...men det er også godt på ";
@@ -111,8 +114,7 @@ async function drawFooterText(ctx, canvas) {
     ctx.fillStyle = "white";
     ctx.font = "36px 'Roboto Condensed'";
     ctx.fillText(footerText, canvas.width / 2 - 50, canvas.height - 35);
-    // Wait for the logo to be drawn before continuing
-    await drawImage(ctx, logoSrc, canvas.width - 210, canvas.height - 75, 145); // Logo on the bottom right
+    await drawImage(ctx, logoSrc, canvas.width - 210, canvas.height - 75, 145); // Adjust logo position based on canvas size
 }
 
 function sendImage(ctx, canvas, res) {
