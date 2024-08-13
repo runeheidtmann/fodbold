@@ -2,6 +2,8 @@
 
 This Node.js application generates custom images for soccer matches, including post-match results and pre-match information. Using the Express framework and the `canvas` library, the app dynamically creates images featuring soccer club logos, scores for concluded matches, or details (such as date, time, and venue) for upcoming matches.
 
+Call the api endpoints via get-requests and download the images to your system.
+
 ## Features
 
 - **Post-Match Results**: Generate images with the final score of the match.
