@@ -30,6 +30,7 @@ The server will start running, and you can access it at `http://localhost:<PORT>
 ## Usage
 
 ### Generating Post-Match Results
+ ![Post-Match Results Example](postmatch.png)
 
 **Endpoint:** `/generate/results`
 
@@ -48,6 +49,7 @@ GET /generate/results?team1=middelfart&team2=efb&score=2-1&division=2
 This request generates an image with the logos of Arsenal and Chelsea, displaying the score "2-1".
 
 ### Generating Pre-Match Information
+![Pre-Match Information Example](prematch.png)
 
 **Endpoint:** `/generate/info`
 
